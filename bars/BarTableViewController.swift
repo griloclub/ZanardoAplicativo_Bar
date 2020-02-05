@@ -1,8 +1,8 @@
 //
 //  BarTableViewController.swift
-//  bars
+//  Bares
 //
-//  Created by Jonathan on 04/02/20.
+//  Created by Eduarda on 04/02/20.
 //  Copyright © 2020 hbsis. All rights reserved.
 //
 
@@ -22,7 +22,8 @@ class BarTableViewController: UITableViewController {
     }
     
     /* Metodos
-     * func Carrega dados ela é responsavel no carregamento de dados da classe bar para a tabelaBares
+     * func CarregaDados 
+     * Responsavel no carregamento de dados da classe bar para a tabelaBares, aqui posso deixar bares pré-cadastrados manualmente
      */
     
     
@@ -47,7 +48,7 @@ class BarTableViewController: UITableViewController {
         bares += [Image1, Image2, Image3]
     }
     
-    //Metodo de uma seção para exibir a tabela
+    //Metodo para exibir uma seção em sua exibição de tabela 
     override func numberOfSections(in tableView: UITableView) -> Int {
        
         return 1
@@ -59,6 +60,10 @@ class BarTableViewController: UITableViewController {
         return bares.count
     }
     //Configurando a Tabela
+    //Mostra todos os atributos de cada bar
+    //Nesse caso está mostrando a foto, nome do bar e a classificação
+    //return cell (Celulas)
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cellIdentifier = "TabelaBares"
@@ -76,3 +81,4 @@ class BarTableViewController: UITableViewController {
     
     
 }
+
