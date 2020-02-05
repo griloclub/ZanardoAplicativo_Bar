@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  BarViewController.swift
 //  bars
 //
 //  Created by Jonathan on 29/01/20.
@@ -8,38 +8,48 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+//Importa uma forma de se comunicar com o sistema, seria como um print, ele oferece mais controle sobre quando as mendagens serão exibidas e salvas
+import os.log
+
+class BarViewController: UIViewController, UITextFieldDelegate {
+    
+    var bar : Bar?
+    var estrelas : RatingBar
 
     @IBOutlet weak var textNome: UITextField!
     @IBOutlet weak var textTelefone: UITextField!
-    @IBOutlet weak var textEndereco: UITextField!
+    @IBOutlet weak var btnSalvar: UIBarButtonItem!
+    @IBOutlet weak var imagem: UIImageView!
+    @IBOutlet weak var latitude: UITextField!
+    @IBOutlet weak var longitude: UITextField!
+    @IBOutlet weak var rua: UITextField!
+    @IBOutlet weak var bairro: UITextField!
+    @IBOutlet weak var numeroCasa: UITextField!
+  
     
-   @IBOutlet weak var imagem: UIImageView!
-    
-    @IBAction func abriGaleria(_ sender: Any) {
+    //Abriando a galeria e camera
+   @IBAction func abriGaleria(_ sender: Any) {
         EscolherImage().selecionadorImagem(self){
             imagem in
             self.imagem.image = imagem
         }
     }
-
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         textNome.delegate = self;
         textTelefone.delegate = self;
-        textEndereco.delegate = self;
+        longitude.delegate = self;
+        latitude.delegate = self
+        rua.delegate = self
+        bairro.delegate = self
+        numeroCasa.delegate =  self
+        
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         var nomeCampo : String!
        switch textField {
             case textNome :
                 nomeCampo = "Bar: "
-                break
-            case textEndereco :
-                nomeCampo = "Endereço: "
                 break
             case textTelefone :
                 nomeCampo = "Telefone: "
@@ -55,9 +65,49 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func btnSalva(_ sender: Any) {
         print("Nome do bar "+textNome.text!)
     }
+    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
+    
+    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
+            let newIndexPath = IndexPath(row: bares.count, section: 0)
+        }
+    }
+    
+    
+    //Metodo que voce configura a viewController presente
+    override func prepare(for segue: UIStoryboardSegue, sender : (Any)?) {
+        super.prepare(for : segue, sender : sender )
+        
+        //Configura o destino da viewController
+        // "===" ultilizado para verificar se o botão sender e o btnSalvar tem a mesma saída
+        guard let button = sender as? UIBarButtonItem, button === btnSalvar
+            else {
+                os_log("O botão salvar não foi precionado, cancelar", log: OSLog.default, type: .debug)
+                return
+        }
+        let lati = (latitude.text as! NSString).floatValue
+        let long = (longitude.text as! NSString).floatValue
+        let nome = textNome.text ?? ""
+        let foto = imagem.image
+        let classifica = estrelas.rating
+       // let lati = latitude.text
+        //let long = longitude.text
+        let telefone = textTelefone.text
+        let nCasa : Int? = Int((numeroCasa.text as! NSString) as String)
+       // let nCasa = numeroCasa.text
+        let bairro0 = bairro.text
+        let rua0 = rua.text
+        
+        bar = Bar(nome: nome, telefone: telefone!, long: long, lati: lati, foto: foto, classifica: classifica, numeroCasa: nCasa!, rua: rua0!, bairro: bairro0!)
+        
+
+        
+   
+
+    }
 }
 
-//classe para acessar a galeria
+//classe para acessar a galeria e camera, selecionando e mostrando a imagem na tela
 
 class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -137,8 +187,9 @@ class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationCon
             }
     
         retornoSelecionador?(image)
+    }
     
-        }
+    
 }
 
 
