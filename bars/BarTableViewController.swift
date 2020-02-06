@@ -11,6 +11,7 @@ import UIKit
 class BarTableViewController: UITableViewController {
     
     var bares = [Bar]()
+ 
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,13 +21,21 @@ class BarTableViewController: UITableViewController {
         
 
     }
+   
+    
+    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
+            bares.append(bar);
+            
+            //Adicionando novo Bar
+            let newIndexPath = IndexPath(row: bares.count, section: 0)
+        }
+    }
     
     /* Metodos
      * func CarregaDados 
      * Responsavel no carregamento de dados da classe bar para a tabelaBares, aqui posso deixar bares pré-cadastrados manualmente
      */
-    
-    
     private func CarregarDados() {
      
         let foto1 = UIImage(named: "Image1")
@@ -77,8 +86,8 @@ class BarTableViewController: UITableViewController {
         cell?.Classifcacao.rating = bar.classifica
         
         return cell!
-    }
+        }
     
-    
+
 }
 

@@ -1,8 +1,8 @@
 //
 //  TabelaBares.swift
-//  bars
+//  Bar
 //
-//  Created by Jonathan on 04/02/20.
+//  Created by Eduarda on 04/02/20.
 //  Copyright © 2020 hbsis. All rights reserved.
 //
 

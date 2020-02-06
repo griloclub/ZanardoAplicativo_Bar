@@ -136,13 +136,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="76j-mP-Njf">
-                                        <rect key="frame" x="8" y="486" width="241" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nº" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6D-7C-Tia">
                                         <rect key="frame" x="262" y="457" width="19" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -150,6 +143,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="atR-1c-qFZ">
+                                        <rect key="frame" x="262" y="486" width="51" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bairro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyX-1Q-tRv">
                                         <rect key="frame" x="8" y="524" width="46" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -178,8 +178,8 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="atR-1c-qFZ">
-                                        <rect key="frame" x="262" y="486" width="51" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="76j-mP-Njf">
+                                        <rect key="frame" x="8" y="486" width="241" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -196,23 +196,33 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Novo Bar" id="qi2-KN-yP3">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="rpT-db-Qi9"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="i3Q-fF-lEj"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="rpT-db-Qi9">
+                            <connections>
+                                <action selector="btnCancelar:" destination="BYZ-38-t0r" id="swK-6V-jZQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="i3Q-fF-lEj">
+                            <connections>
+                                <segue destination="mkF-pn-qdC" kind="unwind" unwindAction="unwindToBarListWithSender:" id="nH7-CZ-2Az"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="Classifica" destination="9QR-yU-CtI" id="60W-he-Oli"/>
                         <outlet property="Latitude" destination="Ddi-0P-t4g" id="3LJ-wX-9zd"/>
                         <outlet property="Longitude" destination="2Gp-3l-B7g" id="Zsb-P8-Ibh"/>
-                        <outlet property="Rua" destination="76j-mP-Njf" id="N32-UA-Wdc"/>
                         <outlet property="bairro" destination="JKz-ol-9rM" id="Ac8-DS-mcX"/>
                         <outlet property="btnSalvar" destination="i3Q-fF-lEj" id="hdU-SC-zwc"/>
+                        <outlet property="estrelas" destination="9QR-yU-CtI" id="y53-ZC-xlK"/>
                         <outlet property="imagem" destination="aMb-DS-GYD" id="bZd-sH-s6j"/>
+                        <outlet property="longitude" destination="2Gp-3l-B7g" id="A58-nx-q1M"/>
                         <outlet property="numeroCasa" destination="atR-1c-qFZ" id="NgL-zs-mJE"/>
+                        <outlet property="rua" destination="76j-mP-Njf" id="O8p-eS-NAg"/>
                         <outlet property="textNome" destination="QHH-t0-IZh" id="B47-hx-2cd"/>
                         <outlet property="textTelefone" destination="BnR-Wz-XyE" id="pLY-Xv-uRY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <exit id="mkF-pn-qdC" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="maN-Qx-Kkh">
                     <connections>
                         <action selector="abriGaleria:" destination="BYZ-38-t0r" id="Yy3-ke-OiO"/>

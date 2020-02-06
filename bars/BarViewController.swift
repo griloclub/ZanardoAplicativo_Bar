@@ -1,8 +1,8 @@
 //
 //  BarViewController.swift
-//  bars
+//  Bar
 //
-//  Created by Jonathan on 29/01/20.
+//  Created by Eduarda on 29/01/20.
 //  Copyright © 2020 hbsis. All rights reserved.
 //
 
@@ -11,11 +11,11 @@ import UIKit
 //Importa uma forma de se comunicar com o sistema, seria como um print, ele oferece mais controle sobre quando as mendagens serão exibidas e salvas
 import os.log
 
-class BarViewController: UIViewController, UITextFieldDelegate {
-    
+class BarViewController : UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
+   
     var bar : Bar?
-    var estrelas : RatingBar
-
+   
+    
     @IBOutlet weak var textNome: UITextField!
     @IBOutlet weak var textTelefone: UITextField!
     @IBOutlet weak var btnSalvar: UIBarButtonItem!
@@ -25,7 +25,12 @@ class BarViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var rua: UITextField!
     @IBOutlet weak var bairro: UITextField!
     @IBOutlet weak var numeroCasa: UITextField!
-  
+    @IBOutlet weak var estrelas: RatingBar!
+    
+    //Botão cancelar os metodos de cadastra
+    @IBAction func btnCancelar(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
     
     //Abriando a galeria e camera
    @IBAction func abriGaleria(_ sender: Any) {
@@ -43,6 +48,24 @@ class BarViewController: UIViewController, UITextFieldDelegate {
         rua.delegate = self
         bairro.delegate = self
         numeroCasa.delegate =  self
+        
+        updatebtnSalvarStates()
+    }
+    //Metodo para desabilitar o botão salvar enquanto o usuario estiver digitando
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        btnSalvar.isEnabled = false
+        return true
+
+    }
+    
+    //Metodo para desabilitar o botão salvar caso os campos estiverem vazios
+    private func updatebtnSalvarStates() {
+        let text = textNome.text ?? ""
+        btnSalvar.isEnabled = !text.isEmpty
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updatebtnSalvarStates()
+        navigationItem.title = textField.text
         
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -66,18 +89,12 @@ class BarViewController: UIViewController, UITextFieldDelegate {
         print("Nome do bar "+textNome.text!)
     }
     //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
-    
-    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
-            let newIndexPath = IndexPath(row: bares.count, section: 0)
-        }
-    }
+   
     
     
     //Metodo que voce configura a viewController presente
     override func prepare(for segue: UIStoryboardSegue, sender : (Any)?) {
         super.prepare(for : segue, sender : sender )
-        
         //Configura o destino da viewController
         // "===" ultilizado para verificar se o botão sender e o btnSalvar tem a mesma saída
         guard let button = sender as? UIBarButtonItem, button === btnSalvar
@@ -85,25 +102,21 @@ class BarViewController: UIViewController, UITextFieldDelegate {
                 os_log("O botão salvar não foi precionado, cancelar", log: OSLog.default, type: .debug)
                 return
         }
-        let lati = (latitude.text as! NSString).floatValue
-        let long = (longitude.text as! NSString).floatValue
+        let lati = (latitude.text! as NSString).floatValue
+        let long = (longitude.text! as NSString).floatValue
         let nome = textNome.text ?? ""
         let foto = imagem.image
         let classifica = estrelas.rating
        // let lati = latitude.text
         //let long = longitude.text
         let telefone = textTelefone.text
-        let nCasa : Int? = Int((numeroCasa.text as! NSString) as String)
+        let nCasa : Int? = Int((numeroCasa.text! as NSString) as String)
        // let nCasa = numeroCasa.text
         let bairro0 = bairro.text
         let rua0 = rua.text
         
         bar = Bar(nome: nome, telefone: telefone!, long: long, lati: lati, foto: foto, classifica: classifica, numeroCasa: nCasa!, rua: rua0!, bairro: bairro0!)
-        
-
-        
-   
-
+    
     }
 }
 
