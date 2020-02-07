@@ -46,6 +46,7 @@
                                     <outlet property="Classifcacao" destination="RQO-Mf-1zh" id="gy4-K7-2YY"/>
                                     <outlet property="FtBar" destination="01w-Z7-m9E" id="ZMT-0n-fBC"/>
                                     <outlet property="NomeBar" destination="Ej0-Cc-iV2" id="dbM-cf-UZX"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="showDetail" id="Jnz-y9-18v"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -109,7 +110,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Longitude  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pxh-EK-TOa">
                                         <rect key="frame" x="8" y="384" width="81" height="27"/>
@@ -123,7 +124,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9QR-yU-CtI" customClass="RatingBar" customModule="bars" customModuleProvider="target">
                                         <rect key="frame" x="55" y="179" width="258" height="63"/>
@@ -148,7 +149,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bairro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyX-1Q-tRv">
                                         <rect key="frame" x="8" y="524" width="46" height="21"/>
@@ -176,7 +177,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="76j-mP-Njf">
                                         <rect key="frame" x="8" y="486" width="241" height="30"/>
@@ -245,7 +246,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bke-Uw-Y0C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1266" y="98"/>
+            <point key="canvasLocation" x="-1260" y="525"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="XLb-65-hc2">
@@ -268,4 +269,7 @@
         <image name="Image" width="900" height="506.25"/>
         <image name="Image1" width="576" height="384"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Jnz-y9-18v"/>
+    </inferredMetricsTieBreakers>
 </document>

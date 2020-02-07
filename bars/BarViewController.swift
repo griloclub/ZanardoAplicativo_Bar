@@ -12,10 +12,10 @@ import UIKit
 import os.log
 
 class BarViewController : UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
-   
+    
+   //Propriedades
     var bar : Bar?
    
-    
     @IBOutlet weak var textNome: UITextField!
     @IBOutlet weak var textTelefone: UITextField!
     @IBOutlet weak var btnSalvar: UIBarButtonItem!
@@ -35,6 +35,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
     //Abriando a galeria e camera
    @IBAction func abriGaleria(_ sender: Any) {
         EscolherImage().selecionadorImagem(self){
+            //Aqui temos a nossa imagem
             imagem in
             self.imagem.image = imagem
         }
@@ -48,6 +49,20 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         rua.delegate = self
         bairro.delegate = self
         numeroCasa.delegate =  self
+        
+        if let bar = bar {
+            navigationItem.title = bar.nome
+            textNome.text = bar.nome
+            imagem.image = bar.foto
+            estrelas.rating = bar.classifica
+            latitude.text = String(bar.lati)
+            longitude.text = String(bar.long)
+            bairro.text = bar.bairro
+            numeroCasa.text = String(bar.numeroCasa)
+            textTelefone.text = bar.telefone
+            rua.text = bar.rua
+            
+        }
         
         updatebtnSalvarStates()
     }
@@ -68,30 +83,10 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         navigationItem.title = textField.text
         
     }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        var nomeCampo : String!
-       switch textField {
-            case textNome :
-                nomeCampo = "Bar: "
-                break
-            case textTelefone :
-                nomeCampo = "Telefone: "
-                break
-        
-       default : break
-        }
-        var Message : String
-        Message = nomeCampo + textField.text!
-        print(Message)
-        return true;
-    }
     @IBAction func btnSalva(_ sender: Any) {
         print("Nome do bar "+textNome.text!)
     }
-    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
-   
-    
-    
+
     //Metodo que voce configura a viewController presente
     override func prepare(for segue: UIStoryboardSegue, sender : (Any)?) {
         super.prepare(for : segue, sender : sender )
@@ -118,61 +113,92 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         bar = Bar(nome: nome, telefone: telefone!, long: long, lati: lati, foto: foto, classifica: classifica, numeroCasa: nCasa!, rua: rua0!, bairro: bairro0!)
     
     }
+
 }
 
 //classe para acessar a galeria e camera, selecionando e mostrando a imagem na tela
 
 class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    //Propriedades
+    
+    //Instancia o controle do sistema de imagens
     var selecionador = UIImagePickerController();
     
+    //Cria um alerta
     var alerta = UIAlertController (title: "escolha uma opção", message: nil, preferredStyle: .actionSheet)
     
+    //Cria um UIViewController
     var viewController : UIViewController?
     
+    //Cria um callback @escaping
     var retornoSelecionador : ((UIImage) -> ())?;
     
+    //Função Principal
     func selecionadorImagem(_ viewController : UIViewController, _ retorno: @escaping ((UIImage) -> ())) {
-    
+        
+        /*Declara o callback dessa função como sendo a variavel externa pickImageCallBack,
+         *servindo como retorno, pois o retono apos a escolha da imagem está em outro metodo
+         */
+        
         retornoSelecionador = retorno;
+        
+        /*Declaramos o View Conroller para transições de tela
+ */
         
         self.viewController = viewController;
         
+        //Menu de interação para acessar a camera ou a galeria
+        
+        //Cada ação é responsavel por chamar o metodo que o usuario pretende ultilizar
+        
+        //Se o usuario clicar na galeria irá abrir a galeria
         let galeria = UIAlertAction(title: "Galeria", style: .default) {
             UIAlertAction in
             self.abrirGaleria(viewController);
         }
-        let cancelar = UIAlertAction(title: "Cancela", style: .default) {
-            UIAlertAction in
-        }
+        //Se o usuario clicar em camera irá abrir a camera
         let camera = UIAlertAction(title: "Camera", style: .default) {
             UIAlertAction in
             self.abrirCamera(viewController);
         }
+        //Se o usuario clicar em cancelar, ele saira do menu e voltara a tela de cadastro
+        let cancelar = UIAlertAction(title: "Cancela", style: .default) {
+            UIAlertAction in
+        }
+       /*Declara que o novo delegate do selecionador são os métodos
+        ImagePickerControllerDidCancel e o imagePickerController que serão criados abaixo*/
         selecionador.delegate = self
-
+        
+            //Adicionando ação ao alerta
             alerta.addAction(galeria)
             alerta.addAction(cancelar)
             alerta.addAction(camera);
-
+        
+        //Exibe alerta na tela
         alerta.popoverPresentationController?.sourceView = self.viewController!.view
         viewController.present(alerta, animated: true, completion: nil)
     }
     
     func abrirCamera(_ viewController : UIViewController) {
-        alerta.dismiss(animated: true, completion: nil)
         
-        if(UIImagePickerController.isSourceTypeAvailable(.camera)) {
-            
+        //Desfaz o alerta de seleção gerado anteriormente
+        alerta.dismiss(animated: true, completion: nil)
+        //Verificação se tem premissão a camera
+        if (UIImagePickerController.isSourceTypeAvailable(.camera)) {
+            //Define o tipo que queremos selecionar como a camera
             selecionador.sourceType = .camera
-            
+            //Abrir a camera
             viewController.present(selecionador, animated: true, completion: nil)
             
         }else{
+            //Se o usuario nao possuir camera irá aparecer este alerta, se tiver ultilizando um simulador por exmeplo
             let alerta = UIAlertController(title: "Alerta", message: "Voce não tem camera", preferredStyle: .actionSheet)
+            //Cria outra ação
             let cancelar = UIAlertAction(title: "Cancela", style: .cancel) {
                 UIAlertAction in
         }
+            //Mostra alerta
             alerta.addAction(cancelar);
             viewController.present(alerta, animated: true, completion: nil)
             
@@ -180,25 +206,31 @@ class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationCon
     }
 
     func abrirGaleria(_ viewController : UIViewController){
-        
+        //Desfaz o alerta gerado
         alerta.dismiss(animated: true, completion: nil)
-    
+        
+        //Por default o tipo de abertura do selecionador em cena é a galeria
         selecionador.sourceType = .photoLibrary
     
+        //Abre tela galeria
         viewController.present(selecionador, animated: true, completion: nil)
         
     }
-        
+    //Metodo que é chamado se a pessoal cancelar a ação
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        //Desfaz a tela de galeria que foi gerada
         picker.dismiss(animated: true, completion: nil)
     }
+        //Metodo chamado apos a escolha de Imagem
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[UIImagePickerController.InfoKey : Any]) {
+            //Desfaz as tela que foram geradas, no caso a tela de camera e galeria
             picker.dismiss(animated: true, completion: nil)
             
+            //Verifica se o arquivo é mesmo uma imagem, passando uma mensagem caso nao seja uma imagem
             guard let image = info[. originalImage] as? UIImage else {
                 fatalError("espera uma imagem, mas foi pego o seguinte dado: \(info)")
             }
-    
+        //Retorna o callback da função SelecionadorImagem
         retornoSelecionador?(image)
     }
     

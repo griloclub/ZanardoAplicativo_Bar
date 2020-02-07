@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class BarTableViewController: UITableViewController {
     
@@ -22,13 +23,15 @@ class BarTableViewController: UITableViewController {
 
     }
    
-    
+    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
     @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
         if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
-            bares.append(bar);
             
             //Adicionando novo Bar
             let newIndexPath = IndexPath(row: bares.count, section: 0)
+            bares.append(bar)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+         
         }
     }
     
@@ -87,7 +90,37 @@ class BarTableViewController: UITableViewController {
         
         return cell!
         }
-    
+     func prepare(segue : UIStoryboardSegue, sender : AnyObject?) {
+        
+        super.prepare(for: segue, sender: sender)
+        
+        switch(segue.identifier ?? "") {
+            case "AddItem" :
+                os_log ("Adiciona novo Bar.", log: OSLog.default, type: .debug)
+            
+            case "ShowDetail" :
+                guard let barDetailViewController = segue.destination as? BarViewController
+                    else {
+                        fatalError("Unexpected destination: \(segue.destination)")
+                    
+                }
+                guard let selectedBarCell = sender as? TabelaBares
+                    else {
+                        fatalError("Unexpected sender: \(String(describing: sender))")
+                }
+            
+                guard let indexPath = tableView.indexPath (for: selectedBarCell)
+                    else {
+                        fatalError("O Bar selecionado não está disponivel na tabela")
+                    }
+            let selectedBar = bares[indexPath.row]
+            barDetailViewController.bar = selectedBarCell
+            
+        default :
+            fatalError("Segue Indetificado: \(String(describing: segue.identifier))")
+        }
+    }
 
 }
+
 
