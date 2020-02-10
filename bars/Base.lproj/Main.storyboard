@@ -58,7 +58,7 @@
                     <navigationItem key="navigationItem" title="Bares" id="wCu-Na-Nmn">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="R7D-5Y-CcY">
                             <connections>
-                                <segue destination="tzd-5b-rnS" kind="show" id="7ix-OH-o8H"/>
+                                <segue destination="tzd-5b-rnS" kind="show" identifier="addItem" id="7ix-OH-o8H"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -76,7 +76,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="bottom" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yRe-W8-qe2">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="aMb-DS-GYD">

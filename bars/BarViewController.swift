@@ -50,6 +50,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         bairro.delegate = self
         numeroCasa.delegate =  self
         
+        //Se o bar já for existente chamara essas funções, que iram preencher os campos de texto
         if let bar = bar {
             navigationItem.title = bar.nome
             textNome.text = bar.nome

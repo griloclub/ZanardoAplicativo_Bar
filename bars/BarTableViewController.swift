@@ -25,6 +25,12 @@ class BarTableViewController: UITableViewController {
    
     //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
     @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            //atualizando bar existente
+            bares[selectedIndexPath.row] = bar
+            tableView.reloadRows(at: [selectedIndexPath], with: .none)
+        }
+        
         if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
             
             //Adicionando novo Bar
@@ -90,15 +96,15 @@ class BarTableViewController: UITableViewController {
         
         return cell!
         }
-     func prepare(segue : UIStoryboardSegue, sender : AnyObject?) {
-        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      
         super.prepare(for: segue, sender: sender)
-        
         switch(segue.identifier ?? "") {
-            case "AddItem" :
+            
+            case "addItem" :
                 os_log ("Adiciona novo Bar.", log: OSLog.default, type: .debug)
             
-            case "ShowDetail" :
+            case "showDetail" :
                 guard let barDetailViewController = segue.destination as? BarViewController
                     else {
                         fatalError("Unexpected destination: \(segue.destination)")
@@ -114,10 +120,9 @@ class BarTableViewController: UITableViewController {
                         fatalError("O Bar selecionado não está disponivel na tabela")
                     }
             let selectedBar = bares[indexPath.row]
-            barDetailViewController.bar = selectedBarCell
-            
-        default :
-            fatalError("Segue Indetificado: \(String(describing: segue.identifier))")
+                barDetailViewController.bar = selectedBar
+        default : break
+           // fatalError("Segue Indetificado: \(String(describing: segue.identifier))")
         }
     }
 
