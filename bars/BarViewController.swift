@@ -29,7 +29,19 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
     
     //Botão cancelar os metodos de cadastra
     @IBAction func btnCancelar(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        
+        let isPresentingInAddBarMode = presentingViewController is UINavigationController
+        
+            if isPresentingInAddBarMode {
+                dismiss(animated: true, completion: nil)
+        }
+            else if let owningNavigationController = navigationController {
+                owningNavigationController.popViewController(animated: true)
+        }
+            else {
+                fatalError("O BarViewControlle não foi apresentado a um controlador de navegação")
+        }
+        
     }
     
     //Abriando a galeria e camera

@@ -16,28 +16,38 @@ class BarTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.leftBarButtonItem = editButtonItem
         
-        //Chamando o metodo para Carregar os dados
-        CarregarDados()
+        if let saveBares = loadBares() {
+        bares += saveBares
+            
+        }
+        else {
+            //Chamando o metodo para Carregar os dados
+            CarregarDados()
         
-
+        }
     }
    
     //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
     @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+        
+        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
+        
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
             //atualizando bar existente
             bares[selectedIndexPath.row] = bar
             tableView.reloadRows(at: [selectedIndexPath], with: .none)
         }
-        
-        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
-            
+        else {
             //Adicionando novo Bar
             let newIndexPath = IndexPath(row: bares.count, section: 0)
+                
             bares.append(bar)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
-         
+            
+            }
+            saveBares()
         }
     }
     
@@ -125,7 +135,41 @@ class BarTableViewController: UITableViewController {
            // fatalError("Segue Indetificado: \(String(describing: segue.identifier))")
         }
     }
-
+    
+    //Override de suporte para edição da tabela
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            //Deletar o bar a partir de sua posição
+            bares.remove(at: indexPath.row)
+            
+            //Salvando
+            saveBares()
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+        } else if editingStyle == .insert {
+            //Cria uma nova instancia
+        }
+    }
+    // Override suporte a edição condicional da exibição de tabela
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // retorno falso se voce não dejesa que o item clicado seja editado
+        return true
+    }
+    private func saveBares() {
+        
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(bares, toFile: Bar.ArchiveURL.path)
+        if isSuccessfulSave {
+            os_log("Bares foram salvos com sucesso.", log: OSLog.default, type: .debug)
+        } else {
+            os_log ("fail ao salvar os bares.....", log: OSLog.default, type: .debug)
+            
+        }
+    }
+    private func loadBares() -> [Bar]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar]
+        
+    }
 }
 
 
