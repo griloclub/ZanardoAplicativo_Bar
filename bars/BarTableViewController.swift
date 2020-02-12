@@ -16,12 +16,14 @@ class BarTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Criando um botão automaticamente, ultilizado para deletar
         navigationItem.leftBarButtonItem = editButtonItem
-        
+        //Carrega dados dos arquivos Url, se ja tiver bares salvos
         if let saveBares = loadBares() {
         bares += saveBares
             
         }
+        //se retorna nil, ele apenas carrega os bares ja cadastrados
         else {
             //Chamando o metodo para Carregar os dados
             CarregarDados()
@@ -29,27 +31,7 @@ class BarTableViewController: UITableViewController {
         }
     }
    
-    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
-    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
-        
-        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
-        
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            //atualizando bar existente
-            bares[selectedIndexPath.row] = bar
-            tableView.reloadRows(at: [selectedIndexPath], with: .none)
-        }
-        else {
-            //Adicionando novo Bar
-            let newIndexPath = IndexPath(row: bares.count, section: 0)
-                
-            bares.append(bar)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            
-            }
-            saveBares()
-        }
-    }
+    
     
     /* Metodos
      * func CarregaDados 
@@ -96,8 +78,10 @@ class BarTableViewController: UITableViewController {
         
         let cellIdentifier = "TabelaBares"
         
+        //as? para que a celula nao receba algo que nao tenha na celula.
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TabelaBares
         
+        //pegando a posição na tabela, para cetar as informações na celula de cada bar.
         let bar = bares[indexPath.row]
         
         cell?.NomeBar.text = bar.nome
@@ -106,6 +90,8 @@ class BarTableViewController: UITableViewController {
         
         return cell!
         }
+    //Navegation
+    //preparando para iniciar uma novo segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       
         super.prepare(for: segue, sender: sender)
@@ -135,7 +121,29 @@ class BarTableViewController: UITableViewController {
            // fatalError("Segue Indetificado: \(String(describing: segue.identifier))")
         }
     }
-    
+    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
+    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
+        
+        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
+            
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                //atualizando bar existente
+                bares[selectedIndexPath.row] = bar
+                //Recarregando minha tabela mudando o index
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            }
+            else {
+                //Adicionando novo Bar
+                let newIndexPath = IndexPath(row: bares.count, section: 0)
+                
+                bares.append(bar)
+                //Inserindo na tabela, criando novo index
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                
+            }
+            saveBares()
+        }
+    }
     //Override de suporte para edição da tabela
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -162,7 +170,7 @@ class BarTableViewController: UITableViewController {
         if isSuccessfulSave {
             os_log("Bares foram salvos com sucesso.", log: OSLog.default, type: .debug)
         } else {
-            os_log ("fail ao salvar os bares.....", log: OSLog.default, type: .debug)
+            os_log ("falha ao salvar os bares.....", log: OSLog.default, type: .debug)
             
         }
     }

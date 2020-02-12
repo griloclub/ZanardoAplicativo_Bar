@@ -235,16 +235,16 @@ class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationCon
         picker.dismiss(animated: true, completion: nil)
     }
         //Metodo chamado apos a escolha de Imagem
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[UIImagePickerController.InfoKey : Any]) {
-            //Desfaz as tela que foram geradas, no caso a tela de camera e galeria
-            picker.dismiss(animated: true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[UIImagePickerController.InfoKey : Any]) {
+        //Desfaz as tela que foram geradas, no caso a tela de camera e galeria
+        picker.dismiss(animated: true, completion: nil)
             
-            //Verifica se o arquivo é mesmo uma imagem, passando uma mensagem caso nao seja uma imagem
-            guard let image = info[. originalImage] as? UIImage else {
-                fatalError("espera uma imagem, mas foi pego o seguinte dado: \(info)")
-            }
-        //Retorna o callback da função SelecionadorImagem
-        retornoSelecionador?(image)
+        //Verifica se o arquivo é mesmo uma imagem, passando uma mensagem caso nao seja uma imagem
+        guard let image = info[. originalImage] as? UIImage else {
+            fatalError("espera uma imagem, mas foi pego o seguinte dado: \(info)")
+        }
+    //Retorna o callback da função SelecionadorImagem
+    retornoSelecionador?(image)
     }
     
     

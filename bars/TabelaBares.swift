@@ -18,6 +18,7 @@ class TabelaBares: UITableViewCell {
     
     @IBOutlet weak var FtBar: UIImageView!
     
+    //
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
