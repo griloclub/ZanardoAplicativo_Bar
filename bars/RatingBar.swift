@@ -10,6 +10,15 @@ import UIKit
 
 @IBDesignable class RatingBar : UIStackView {
     
+    //Propriedades
+    private var ratingButtons = [UIButton]()
+    
+    var rating = 0 {
+        didSet{
+            updateButtonSelectionStates()
+        }
+    }
+    
     var starSize: CGSize = CGSize(width: 44.0, height: 44.0) {
         didSet {
             setupButtons();
@@ -20,26 +29,42 @@ import UIKit
             setupButtons();
         }
     }
+    // Inicializador
     
-    private var ratingButtons = [UIButton]()
-    
-    var rating = 0 {
-        didSet{
-            updateButtonSelectionStates()
-        }
-    }
-    
+    //Inicializa as estrelas
     override init(frame: CGRect) {
         super.init(frame : frame)
         setupButtons()
     }
+    //Inicializa as estrelas já setadas com uma classificação, no caso ultilizado qaundo já está salvo
     required init(coder : NSCoder) {
         super.init(coder : coder)
         setupButtons()
     }
+    //Ação do botão
+    //@objc ultilizado para partes do codigo em objetive C
+    @objc func ratingButtonTapped(button : UIButton){
+        guard let index = ratingButtons.index(of: button)
+            else{
+                fatalError("O Botão, \(button) ")
+                
+        }
+        //Calcula as estrelas selecionadas no botão
+        
+        let selectedRating = index + 1
+        
+        if selectedRating == rating {
+            rating = 0
+            
+        } else {
+            rating = selectedRating
+            
+        }
+    }
+   
     private func setupButtons() {
         
-        //limpando os antigos botoes
+        //Limpando os botões
         
         for button in ratingButtons {
             removeArrangedSubview(button)
@@ -64,17 +89,18 @@ import UIKit
             //Criando Botão
             let button = UIButton()
             
-            //Criando Imagens do botão
+            //Criando o botão a partir do que o usuario clicar
             button.setImage(emptyStar, for: .normal)
             button.setImage(filledStar, for: .selected)
             button.setImage(highlightedStar, for: .highlighted)
             button.setImage(highlightedStar, for: [.highlighted, .selected])
         
+            //Adiciona contraints
             button.translatesAutoresizingMaskIntoConstraints = false
             button.heightAnchor.constraint(equalToConstant: starSize.height).isActive = true
-            
             button.widthAnchor.constraint(equalToConstant:  starSize.width).isActive = true
             
+            //Definindo a ação do botão
             button.addTarget(self, action: #selector(ratingButtonTapped(button:)), for: .touchUpInside)
             
             addArrangedSubview(button)
@@ -84,25 +110,7 @@ import UIKit
         updateButtonSelectionStates();
         
     }
-
-    @objc func ratingButtonTapped(button : UIButton){
-        guard let index = ratingButtons.index(of: button)
-            else{
-                fatalError("O Botão, \(button) ")
-    
-        }
-        //calcula as estrelas selecionadas no botao
-        
-        let selectedRating = index + 1
-        
-        if selectedRating == rating {
-            rating = 0
-            
-        } else {
-            rating = selectedRating
-        
-        }
-    }
+  
     private func updateButtonSelectionStates(){
         for(index, button) in ratingButtons.enumerated(){
             button.isSelected = index < rating

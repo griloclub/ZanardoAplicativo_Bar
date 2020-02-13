@@ -53,11 +53,22 @@ class Bar : NSObject, NSCoding {
         self.bairro = bairro
     
     //Verificação
-        if nome.isEmpty || classifica < 0 || telefone.count < 8 || lati > 90 || lati < -90 || long > 180 || long < -180 || numeroCasa < 0 || rua.isEmpty || bairro.isEmpty {
+        guard (classifica >= 0) && (classifica <= 5) else{
+            return nil
+        }
+        guard (lati <= 90) && (lati >= -90) else {
+            return nil
+        }
+        guard (long <= 180) && (long >= -180) else {
+            return nil
+        }
+        
+        if nome.isEmpty || telefone.count < 8 || numeroCasa < 0 || rua.isEmpty || bairro.isEmpty {
             return nil;
         }
         
     }
+    //Iniciador do NSCoding
     func encode(with aCoder: NSCoder) {
         aCoder.encode(nome, forKey: PropriedadeKey.nome)
         aCoder.encode(telefone, forKey: PropriedadeKey.telefone)

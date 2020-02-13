@@ -20,7 +20,7 @@ class barsTests: XCTestCase {
         let zeroClassifica = Bar.init(nome: "zero", telefone: "992145598", long: 15, lati: 15, foto: nil, classifica: 0, numeroCasa: 10, rua: "São Paulo", bairro: "Itoupava")
         XCTAssertNotNil(zeroClassifica)
         
-        //Testando se o telefone receber 9 DIGITOS
+        //Testando se o telefone receber 8 DIGITOS
         let numeroDeTelefoneCerto = Bar.init(nome: "Positivo", telefone: "222223333", long: 15, lati: 15, foto: nil, classifica: 2, numeroCasa: 10, rua: "São Paulo", bairro: "Itoupava")
         XCTAssertNotNil(numeroDeTelefoneCerto)
         
@@ -63,6 +63,11 @@ class barsTests: XCTestCase {
         let testEnderecoNil = Bar.init(nome: "Juka", telefone: "25525222", long: 15, lati: 15, foto: nil, classifica: 4, numeroCasa: 15, rua: "", bairro: "")
         XCTAssertNil(testEnderecoNil)
      
+    }
+    
+    func testEquals() {
+        let testRecendoClassificaMax = Bar.init(nome: "juha", telefone: "3314-1411", long: 18, lati: 9, foto: nil, classifica: 5, numeroCasa: 10, rua: "fsds", bairro: "fdsf")
+        XCTAssertEqual(testRecendoClassificaMax?.classifica, 5)
     }
     //Testando para dar errado
    // func testInicializandoComErros() {
