@@ -11,6 +11,10 @@ import UIKit
 //Importa uma forma de se comunicar com o sistema, seria como um print, ele oferece mais controle sobre quando as mendagens serão exibidas e salvas
 import os.log
 
+/*Classe designada para o cadastro de bares, toda parte de controller da view de cadastro de
+ *bares é feita nessa classe, toda as declações da view também, ela também é responsavél em*
+ *fazer as edições dos bares
+ */
 class BarViewController : UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
     
    //Propriedades
@@ -27,7 +31,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
     @IBOutlet weak var numeroCasa: UITextField!
     @IBOutlet weak var estrelas: RatingBar!
     
-    //Botão cancelar os metodos de cadastra
+    //Botão cancelar, para voltar a view anterior
     @IBAction func btnCancelar(_ sender: UIBarButtonItem) {
         
         let isPresentingInAddBarMode = presentingViewController is UINavigationController
@@ -62,7 +66,8 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         bairro.delegate = self
         numeroCasa.delegate =  self
         
-        //Se o bar já for existente chamara essas funções, que iram preencher os campos de texto
+        /*Se o bar já for existente, irá carregar as informações do bar nos campos de texto
+         apartir deste if*/
         if let bar = bar {
             navigationItem.title = bar.nome
             textNome.text = bar.nome
@@ -91,11 +96,14 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         let text = textNome.text ?? ""
         btnSalvar.isEnabled = !text.isEmpty
     }
+    //Está função irá salvando as informações que estão sendo digitada no Model, para facilitar
+    //quando o usuario terminar de preencher todos os campos e salvar o bar
     func textFieldDidEndEditing(_ textField: UITextField) {
         updatebtnSalvarStates()
         navigationItem.title = textField.text
         
     }
+    //Botão para salvar edições ou cadastro de novo bar
     @IBAction func btnSalva(_ sender: Any) {
         print("Nome do bar "+textNome.text!)
     }
@@ -110,16 +118,15 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
                 os_log("O botão salvar não foi precionado, cancelar", log: OSLog.default, type: .debug)
                 return
         }
+        //Recebendo todas as informações digitadas pelo usuario e fazendo as converções
+        //necessarias para salvar o bar 
         let lati = (latitude.text! as NSString).floatValue
         let long = (longitude.text! as NSString).floatValue
         let nome = textNome.text ?? ""
         let foto = imagem.image
         let classifica = estrelas.rating
-       // let lati = latitude.text
-        //let long = longitude.text
         let telefone = textTelefone.text
         let nCasa : Int? = Int((numeroCasa.text! as NSString) as String)
-       // let nCasa = numeroCasa.text
         let bairro0 = bairro.text
         let rua0 = rua.text
         
@@ -129,7 +136,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
 
 }
 
-//classe para acessar a galeria e camera, selecionando e mostrando a imagem na tela
+//Classe para acessar a galeria e camera, selecionando e mostrando a imagem na tela
 
 class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -192,7 +199,7 @@ class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationCon
         alerta.popoverPresentationController?.sourceView = self.viewController!.view
         viewController.present(alerta, animated: true, completion: nil)
     }
-    
+    //Função que irá abrir a camera do celular
     func abrirCamera(_ viewController : UIViewController) {
         
         //Desfaz o alerta de seleção gerado anteriormente
@@ -217,7 +224,7 @@ class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationCon
             
         }
     }
-
+    //Função que irá abrir a galeria do celular
     func abrirGaleria(_ viewController : UIViewController){
         //Desfaz o alerta gerado
         alerta.dismiss(animated: true, completion: nil)

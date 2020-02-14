@@ -9,6 +9,9 @@
 import UIKit
 import os.log
 
+/*Nesta classe temos todos as manipulações feitas na view de tabela bares, também será
+ * responsável em caregar todos os dados que serão mostrados pelas views
+ */
 class BarTableViewController: UITableViewController {
     
     var bares = [Bar]()
@@ -23,7 +26,7 @@ class BarTableViewController: UITableViewController {
         bares += saveBares
             
         }
-        //se retorna nil, ele apenas carrega os bares ja cadastrados
+        //Se retorna nil, ele apenas carrega os bares ja cadastrados
         else {
             //Chamando o metodo para Carregar os dados
             CarregarDados()
@@ -35,7 +38,8 @@ class BarTableViewController: UITableViewController {
     
     /* Metodos
      * func CarregaDados 
-     * Responsavel no carregamento de dados da classe bar para a tabelaBares, aqui posso deixar bares pré-cadastrados manualmente
+     * Responsavel no carregamento de dados da classe bar para a tabelaBares, aqui posso deixar
+     * bares pré-cadastrados manualmente
      */
     private func CarregarDados() {
      
@@ -78,10 +82,10 @@ class BarTableViewController: UITableViewController {
         
         let cellIdentifier = "TabelaBares"
         
-        //as? para que a celula nao receba algo que nao tenha na celula.
+        //As? para que a celula não receba algo que nao tenha na tabelaBares.
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TabelaBares
         
-        //pegando a posição na tabela, para cetar as informações na celula de cada bar.
+        //Pegando a posição na tabela, para cetar as informações na celula de cada bar.
         let bar = bares[indexPath.row]
         
         cell?.NomeBar.text = bar.nome
@@ -91,12 +95,13 @@ class BarTableViewController: UITableViewController {
         return cell!
         }
     //Navegation
-    //preparando para iniciar uma novo segue
+    
+    //Preparando para iniciar uma novo segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       
         super.prepare(for: segue, sender: sender)
+        //Aqui fazemos uma verificação apartir da segue selecionada.
         switch(segue.identifier ?? "") {
-            
             case "addItem" :
                 os_log ("Adiciona novo Bar.", log: OSLog.default, type: .debug)
             
@@ -127,7 +132,7 @@ class BarTableViewController: UITableViewController {
         if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
             
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                //atualizando bar existente
+                //Atualizando bar existente
                 bares[selectedIndexPath.row] = bar
                 //Recarregando minha tabela mudando o index
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
@@ -159,11 +164,15 @@ class BarTableViewController: UITableViewController {
             //Cria uma nova instancia
         }
     }
-    // Override suporte a edição condicional da exibição de tabela
+    //Override suporte a edição condicional da exibição de tabela
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // retorno falso se voce não dejesa que o item clicado seja editado
+        // Retorno falso se voce não deseja que o item clicado seja editado
         return true
     }
+    /*Função responsavél quando o usuario for salvar o bar, cada bar será salvo no ArchiveURL,
+     *uma persistencia de dados, que quando o usuario sair do aplicativo ainda estará salvo os
+     *bares que ele cadastro
+     */
     private func saveBares() {
         
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(bares, toFile: Bar.ArchiveURL.path)
@@ -174,6 +183,7 @@ class BarTableViewController: UITableViewController {
             
         }
     }
+    //Função responsavel por carregar os bares que estiverem salvos no ArchiveURL
     private func loadBares() -> [Bar]? {
         return NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar]
         

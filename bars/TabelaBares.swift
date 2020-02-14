@@ -7,7 +7,10 @@
 //
 
 import UIKit
-
+/*Classe ultilizada como uma view para mostra os bares na tabela
+ *Não apresenta nenhum metodo
+ *Mas todas as views que serão vistas na tela será declarado aqui
+ */
 class TabelaBares: UITableViewCell {
     
     //Propriedades

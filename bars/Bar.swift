@@ -8,7 +8,8 @@
 
 import UIKit
 import os.log
-
+/*Nossa classe modelo é responsavel em declarar todas as propriedades do objeto que estamos
+ ultilizamos */
 class Bar : NSObject, NSCoding {
     
     //Propriedades

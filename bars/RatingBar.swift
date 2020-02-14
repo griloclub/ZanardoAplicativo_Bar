@@ -7,7 +7,10 @@
 //
 
 import UIKit
-
+/*Classe que ficou designada de criar a parte de classificação, todos e metodos de manipulação
+ *das estrelas se encontra nessa classe, quando é preciso mostra na tela a view irá estender
+ *desta classe
+ */
 @IBDesignable class RatingBar : UIStackView {
     
     //Propriedades
@@ -18,12 +21,13 @@ import UIKit
             updateButtonSelectionStates()
         }
     }
-    
+    //Definição das dimenções de cada estrela
     var starSize: CGSize = CGSize(width: 44.0, height: 44.0) {
         didSet {
             setupButtons();
         }
     }
+    //Quantidade de estrela definido por variável do tipo Inteiro
     var starCount : Int = 5 {
         didSet {
             setupButtons();
@@ -49,7 +53,7 @@ import UIKit
                 fatalError("O Botão, \(button) ")
                 
         }
-        //Calcula as estrelas selecionadas no botão
+        //Calcula as estrelas selecionadas pelo botão
         
         let selectedRating = index + 1
         
@@ -61,7 +65,7 @@ import UIKit
             
         }
     }
-   
+    //Função para fazer a view dos botões 
     private func setupButtons() {
         
         //Limpando os botões
@@ -110,7 +114,7 @@ import UIKit
         updateButtonSelectionStates();
         
     }
-  
+    //Função responsavel por autualizar a imagens dos botões selecionados, no caso as estrelas, verificando os botões selecionados e não selecionados para designar as imagens para cada botão
     private func updateButtonSelectionStates(){
         for(index, button) in ratingButtons.enumerated(){
             button.isSelected = index < rating
