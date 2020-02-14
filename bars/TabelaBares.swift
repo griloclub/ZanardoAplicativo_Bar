@@ -21,7 +21,7 @@ class TabelaBares: UITableViewCell {
     
     @IBOutlet weak var FtBar: UIImageView!
     
-    
+   
     //MARK: Override funções
     override func awakeFromNib() {
         super.awakeFromNib()

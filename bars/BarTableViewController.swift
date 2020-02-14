@@ -26,6 +26,7 @@ class BarTableViewController: UITableViewController {
         if let saveBares = loadBares() {
         bares += saveBares
             
+            
         }
         //Se retorna nil, ele apenas carrega os bares ja cadastrados
         else {
@@ -137,6 +138,7 @@ class BarTableViewController: UITableViewController {
         cell?.NomeBar.text = bar.nome
         cell?.FtBar.image = bar.foto
         cell?.Classifcacao.rating = bar.classifica
+        cell?.backgroundColor = UIColor.yellow
         
         return cell!
         }

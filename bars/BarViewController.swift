@@ -64,6 +64,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
     //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.yellow
         textNome.delegate = self;
         textTelefone.delegate = self;
         longitude.delegate = self;
