@@ -14,9 +14,10 @@ import os.log
  */
 class BarTableViewController: UITableViewController {
     
+    //MARK: Propriedades
     var bares = [Bar]()
  
-
+    //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         //Criando um botão automaticamente, ultilizado para deletar
@@ -34,11 +35,54 @@ class BarTableViewController: UITableViewController {
         }
     }
    
+    //MARK: Action
     
+    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
+    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
+        
+        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
+            
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                //Atualizando bar existente
+                bares[selectedIndexPath.row] = bar
+                //Recarregando minha tabela mudando o index
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            }
+            else {
+                //Adicionando novo Bar
+                let newIndexPath = IndexPath(row: bares.count, section: 0)
+                
+                bares.append(bar)
+                //Inserindo na tabela, criando novo index
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                
+            }
+            saveBares()
+        }
+    }
+    //MARK: Private Funções
     
-    /* Metodos
-     * func CarregaDados 
-     * Responsavel no carregamento de dados da classe bar para a tabelaBares, aqui posso deixar
+    /*Função responsavél quando o usuario for salvar o bar, cada bar será salvo no ArchiveURL,
+     * uma persistencia de dados, que quando o usuario sair do aplicativo ainda estará salvo os
+     * bares que ele cadastro
+     */
+    private func saveBares() {
+        
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(bares, toFile: Bar.ArchiveURL.path)
+        if isSuccessfulSave {
+            os_log("Bares foram salvos com sucesso.", log: OSLog.default, type: .debug)
+        } else {
+            os_log ("falha ao salvar os bares.....", log: OSLog.default, type: .debug)
+            
+        }
+    }
+    //Função responsavel por carregar os bares que estiverem salvos no ArchiveURL
+    private func loadBares() -> [Bar]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar]
+        
+    }
+  
+     /* Responsavel no carregamento de dados da classe bar para a tabelaBares, aqui posso deixar
      * bares pré-cadastrados manualmente
      */
     private func CarregarDados() {
@@ -61,6 +105,8 @@ class BarTableViewController: UITableViewController {
         }
         bares += [Image1, Image2, Image3]
     }
+    
+    //MARK: Override Funções
     
     //Metodo para exibir uma seção em sua exibição de tabela 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -126,29 +172,7 @@ class BarTableViewController: UITableViewController {
            // fatalError("Segue Indetificado: \(String(describing: segue.identifier))")
         }
     }
-    //AS? está converte para tentar fazer dowcast do controlador, se nao for possivel fazer conversao vai retornar nil, também se tornado false sendo impossivel executar a if instrução
-    @IBAction func unwindToBarList(sender : UIStoryboardSegue) {
-        
-        if let sourceViewController = sender.source as? BarViewController, let bar = sourceViewController.bar {
-            
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                //Atualizando bar existente
-                bares[selectedIndexPath.row] = bar
-                //Recarregando minha tabela mudando o index
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            }
-            else {
-                //Adicionando novo Bar
-                let newIndexPath = IndexPath(row: bares.count, section: 0)
-                
-                bares.append(bar)
-                //Inserindo na tabela, criando novo index
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-                
-            }
-            saveBares()
-        }
-    }
+   
     //Override de suporte para edição da tabela
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -169,25 +193,7 @@ class BarTableViewController: UITableViewController {
         // Retorno falso se voce não deseja que o item clicado seja editado
         return true
     }
-    /*Função responsavél quando o usuario for salvar o bar, cada bar será salvo no ArchiveURL,
-     *uma persistencia de dados, que quando o usuario sair do aplicativo ainda estará salvo os
-     *bares que ele cadastro
-     */
-    private func saveBares() {
-        
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(bares, toFile: Bar.ArchiveURL.path)
-        if isSuccessfulSave {
-            os_log("Bares foram salvos com sucesso.", log: OSLog.default, type: .debug)
-        } else {
-            os_log ("falha ao salvar os bares.....", log: OSLog.default, type: .debug)
-            
-        }
-    }
-    //Função responsavel por carregar os bares que estiverem salvos no ArchiveURL
-    private func loadBares() -> [Bar]? {
-        return NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar]
-        
-    }
+    
 }
 
 

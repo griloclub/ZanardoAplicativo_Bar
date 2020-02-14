@@ -8,12 +8,12 @@
 
 import UIKit
 /*Classe que ficou designada de criar a parte de classificação, todos e metodos de manipulação
- *das estrelas se encontra nessa classe, quando é preciso mostra na tela a view irá estender
- *desta classe
+ * das estrelas se encontra nessa classe, quando é preciso mostra na tela a view irá estender
+ * desta classe
  */
 @IBDesignable class RatingBar : UIStackView {
     
-    //Propriedades
+    //MARK: Propriedades
     private var ratingButtons = [UIButton]()
     
     var rating = 0 {
@@ -33,7 +33,7 @@ import UIKit
             setupButtons();
         }
     }
-    // Inicializador
+    //MARK: Inicializador
     
     //Inicializa as estrelas
     override init(frame: CGRect) {
@@ -45,6 +45,8 @@ import UIKit
         super.init(coder : coder)
         setupButtons()
     }
+    //MARK: ACTION
+    
     //Ação do botão
     //@objc ultilizado para partes do codigo em objetive C
     @objc func ratingButtonTapped(button : UIButton){
@@ -65,6 +67,8 @@ import UIKit
             
         }
     }
+    //MARK: Private funções
+    
     //Função para fazer a view dos botões 
     private func setupButtons() {
         

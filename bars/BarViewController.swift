@@ -17,7 +17,7 @@ import os.log
  */
 class BarViewController : UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
     
-   //Propriedades
+    //MARK: Propriedades
     var bar : Bar?
    
     @IBOutlet weak var textNome: UITextField!
@@ -31,6 +31,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
     @IBOutlet weak var numeroCasa: UITextField!
     @IBOutlet weak var estrelas: RatingBar!
     
+    //MARK: Action
     //Botão cancelar, para voltar a view anterior
     @IBAction func btnCancelar(_ sender: UIBarButtonItem) {
         
@@ -47,6 +48,10 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         }
         
     }
+    //Botão para salvar edições ou cadastro de novo bar
+    @IBAction func btnSalva(_ sender: Any) {
+        print("Nome do bar "+textNome.text!)
+    }
     
     //Abriando a galeria e camera
    @IBAction func abriGaleria(_ sender: Any) {
@@ -56,6 +61,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
             self.imagem.image = imagem
         }
     }
+    //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         textNome.delegate = self;
@@ -84,17 +90,18 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         
         updatebtnSalvarStates()
     }
+    //MARK: Funções
+    //Metodo para desabilitar o botão salvar caso os campos estiverem vazios
+    private func updatebtnSalvarStates() {
+        let text = textNome.text ?? ""
+        btnSalvar.isEnabled = !text.isEmpty
+    }
+    
     //Metodo para desabilitar o botão salvar enquanto o usuario estiver digitando
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         btnSalvar.isEnabled = false
         return true
 
-    }
-    
-    //Metodo para desabilitar o botão salvar caso os campos estiverem vazios
-    private func updatebtnSalvarStates() {
-        let text = textNome.text ?? ""
-        btnSalvar.isEnabled = !text.isEmpty
     }
     //Está função irá salvando as informações que estão sendo digitada no Model, para facilitar
     //quando o usuario terminar de preencher todos os campos e salvar o bar
@@ -103,11 +110,7 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
         navigationItem.title = textField.text
         
     }
-    //Botão para salvar edições ou cadastro de novo bar
-    @IBAction func btnSalva(_ sender: Any) {
-        print("Nome do bar "+textNome.text!)
-    }
-
+    
     //Metodo que voce configura a viewController presente
     override func prepare(for segue: UIStoryboardSegue, sender : (Any)?) {
         super.prepare(for : segue, sender : sender )
@@ -135,12 +138,12 @@ class BarViewController : UIViewController, UINavigationControllerDelegate, UITe
     }
 
 }
+//MARK: Classe EscolherImagem
 
 //Classe para acessar a galeria e camera, selecionando e mostrando a imagem na tela
-
 class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    //Propriedades
+    //MARK: Propriedades da classe EscolherImagem
     
     //Instancia o controle do sistema de imagens
     var selecionador = UIImagePickerController();
@@ -154,17 +157,16 @@ class EscolherImage : NSObject, UIImagePickerControllerDelegate, UINavigationCon
     //Cria um callback @escaping
     var retornoSelecionador : ((UIImage) -> ())?;
     
-    //Função Principal
+    //MARK: Função Principal da classe EscolherImagem
     func selecionadorImagem(_ viewController : UIViewController, _ retorno: @escaping ((UIImage) -> ())) {
         
         /*Declara o callback dessa função como sendo a variavel externa pickImageCallBack,
-         *servindo como retorno, pois o retono apos a escolha da imagem está em outro metodo
+         * servindo como retorno, pois o retono apos a escolha da imagem está em outro metodo
          */
         
         retornoSelecionador = retorno;
         
-        /*Declaramos o View Conroller para transições de tela
- */
+        /*Declaramos o View Conroller para transições de tela*/
         
         self.viewController = viewController;
         

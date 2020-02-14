@@ -13,7 +13,7 @@ import UIKit
  */
 class TabelaBares: UITableViewCell {
     
-    //Propriedades
+    //MARK: Propriedades
     
     @IBOutlet weak var Classifcacao: RatingBar!
     
@@ -21,7 +21,8 @@ class TabelaBares: UITableViewCell {
     
     @IBOutlet weak var FtBar: UIImageView!
     
-    //
+    
+    //MARK: Override funções
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

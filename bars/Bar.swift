@@ -12,7 +12,7 @@ import os.log
  ultilizamos */
 class Bar : NSObject, NSCoding {
     
-    //Propriedades
+    //MARK: Propriedades
     var nome : String
     var telefone : String
     var long : Float
@@ -23,11 +23,11 @@ class Bar : NSObject, NSCoding {
     var rua : String
     var bairro : String
     
-    //Arquivos Dados
+    //MARK: Arquivos Dados
     static var DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("bares")
     
-    //Tipos
+    //MARK: Tipos
     struct PropriedadeKey {
         static let nome = "nome"
         static let telefone = "telefone"
@@ -40,7 +40,7 @@ class Bar : NSObject, NSCoding {
         static let bairro = "bairro"
         
     }
-    //Inicializa(Construtor)
+    //MARK: Inicializa(Construtor)
     init?(nome: String, telefone: String, long: Float, lati: Float, foto: UIImage?, classifica: Int, numeroCasa : Int, rua : String, bairro : String) {
         
         self.nome = nome
@@ -69,7 +69,7 @@ class Bar : NSObject, NSCoding {
         }
         
     }
-    //Iniciador do NSCoding
+    //MARK: Iniciador do NSCoding
     func encode(with aCoder: NSCoder) {
         aCoder.encode(nome, forKey: PropriedadeKey.nome)
         aCoder.encode(telefone, forKey: PropriedadeKey.telefone)
