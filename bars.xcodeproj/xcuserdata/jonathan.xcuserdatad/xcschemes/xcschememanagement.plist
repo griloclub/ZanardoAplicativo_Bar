@@ -4,10 +4,23 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>bars.xcscheme</key>
+		<key>bars.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>ABAE076623E1A11800BD9C66</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ABAE077A23E1A11A00BD9C66</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
