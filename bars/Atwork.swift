@@ -16,7 +16,7 @@ class Atwork : NSObject, MKAnnotation {
     
     let title: String?
     let localNome : String?
-    let classificacao : Int
+    let classificacao : Int?
     let coordinate: CLLocationCoordinate2D
     
     init(title: String, localNome : String, classificacao : Int, cordinate : CLLocationCoordinate2D) {
@@ -34,10 +34,10 @@ class Atwork : NSObject, MKAnnotation {
     
     //Listando todos os bares no maps
     init?(bar: Bar) {
+        self.localNome = bar.bairro
         self.title = bar.nome
         self.classificacao = bar.classifica
-        self.coordinate = CLLocationCoordinate2D(latitude:
-            bar.coordinate
+        self.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(bar.lati), longitude: CLLocationDegrees(bar.long))
     }
         
         

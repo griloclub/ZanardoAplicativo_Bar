@@ -42,5 +42,7 @@
 	<string>Qual sua melhor imagem?</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Vamos tirar uma foto?</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Qual sua Localização?</string>
 </dict>
 </plist>

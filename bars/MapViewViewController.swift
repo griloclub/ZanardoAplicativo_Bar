@@ -8,31 +8,71 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
-class MapViewViewController: UIViewController {
+class MapViewViewController: UIViewController, CLLocationManagerDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
     
+   // var bares: [ Atwork ] = []
+    var locationManager = CLLocationManager()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //definir localização inicial
-        let inicialLocal = CLLocation(latitude: -26.917660, longitude: -49.070816)
-        centerMapOnLocation(local: inicialLocal)
-        //Definindo o delegate da vizualização do mapa
         mapView.delegate = self
-        //Criando uma anotação no mapa
-        let atWork = Atwork(title: "Predio de Blumenau", localNome: "Centro Blumenau", tipo: "Predio Comercial", cordinate: CLLocationCoordinate2D(latitude: -26.914919, longitude:  -49.071437))
-        mapView.addAnnotation(atWork)
-        // Do any additional setup after loading the view.
-    }
-    let regiaoRaio : CLLocationDistance = 1000
-    
-    func centerMapOnLocation(local : CLLocation) {
-        let cordenadasRegiao = MKCoordinateRegion(center: local.coordinate, latitudinalMeters: regiaoRaio, longitudinalMeters: regiaoRaio)
+        //Mostrando mapa como satelite
+        self.mapView.mapType = MKMapType.satellite
         
-        mapView.setRegion(cordenadasRegiao, animated: true)
+    
+        //Autorização
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+      
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation = true
+            locationManager.requestLocation()
+        
+        }
+        
+    
+       // mapView.addAnnotation(bares as! MKAnnotation)
+        
+        //Criando uma anotação no mapa
+        /*let atWork = Atwork(title: "Predio de Blumenau", localNome: "Centro Blumenau", classificacao: 3, cordinate: CLLocationCoordinate2D(latitude: -26.914919, longitude:  -49.071437))
+        mapView.addAnnotation(atWork)*/
+      
+    }
+   
+        
+      
+   
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let UserLocation : CLLocation = locations [0] as CLLocation
+        let location = CLLocationCoordinate2D(latitude: UserLocation.coordinate.latitude, longitude: UserLocation.coordinate.longitude)
+        let latitudeDelta: CLLocationDegrees = 0.01
+        let longitudeDelta: CLLocationDegrees = 0.01
+        let span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+        let center = CLLocationCoordinate2DMake(location.latitude, location.longitude)
+        let region = MKCoordinateRegion(center: center, span: span)
+        self.mapView.setRegion(region, animated: false)
+        }
+    
+    // updateMapCenter(manager: manager)
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error: \(error.localizedDescription)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation()
+        }
     }
 }
+
     extension MapViewViewController : MKMapViewDelegate {
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

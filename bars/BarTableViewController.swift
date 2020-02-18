@@ -92,15 +92,15 @@ class BarTableViewController: UITableViewController {
         let foto2 = UIImage(named: "Image2")
         let foto3 = UIImage(named: "Image3")
         
-        guard let Image1 = Bar.init(nome: "Bar do Juka", telefone: "3323-3325", long: 15, lati: 15, foto: foto1, classifica: 5, numeroCasa: 10, rua: "São Paulo", bairro: "Itoupava")
+        guard let Image1 = Bar.init(nome: "Bar do Juka", telefone: "3323-3325", long: -49.070986, lati: -26.915024, foto: foto1, classifica: 5, numeroCasa: 10, rua: "São Paulo", bairro: "Itoupava")
             else {
                 fatalError("Algo está errado!!")
         }
-        guard let Image2 = Bar.init(nome: "Bar do Tijolao", telefone: "33325569", long: 15, lati: 15, foto: foto2, classifica: 3, numeroCasa: 8, rua: "Rua São Jose", bairro: "São Luis")
+        guard let Image2 = Bar.init(nome: "Bar do Tijolao", telefone: "33325569", long: -49.070781, lati: -26.913993, foto: foto2, classifica: 3, numeroCasa: 8, rua: "Rua São Jose", bairro: "São Luis")
             else {
                 fatalError("Algo está errado!!")
         }
-        guard let Image3 = Bar.init(nome: "Bar do Julio", telefone: "33251415", long: 16, lati: 16, foto: foto3, classifica: 2, numeroCasa: 2, rua: "São Jose", bairro: "Nova Esperança")
+        guard let Image3 = Bar.init(nome: "Bar do Julio", telefone: "33251415", long: -49.069460, lati: -26.915129, foto: foto3, classifica: 2, numeroCasa: 2, rua: "São Jose", bairro: "Nova Esperança")
             else {
                 fatalError("Algo está errado!!")
         }
