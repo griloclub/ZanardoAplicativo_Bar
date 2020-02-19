@@ -16,7 +16,8 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
     
    // var bares: [ Atwork ] = []
     var locationManager = CLLocationManager()
-
+    var bares = [Atwork]()
+    var bar : Bar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,7 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
             locationManager.requestLocation()
         
         }
+        carregaBarsAnotacao()
         
     
        // mapView.addAnnotation(bares as! MKAnnotation)
@@ -44,10 +46,22 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
         //Criando uma anotação no mapa
         /*let atWork = Atwork(title: "Predio de Blumenau", localNome: "Centro Blumenau", classificacao: 3, cordinate: CLLocationCoordinate2D(latitude: -26.914919, longitude:  -49.071437))
         mapView.addAnnotation(atWork)*/
-      
+       
     }
-   
-        
+    func carregaBarsAnotacao() {
+        let savedBars = NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar] ?? [Bar]()
+        print(bar)
+        for bar in savedBars {
+            let atwork = Atwork(bar: bar)!;
+            let anotacao = MKPointAnnotation()
+            anotacao.title = atwork.title
+            anotacao.coordinate = CLLocationCoordinate2D(
+                latitude: atwork.coordinate.latitude,
+                longitude: atwork.coordinate.longitude
+            )
+            mapView.addAnnotation(anotacao)
+        }
+    }
       
    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
