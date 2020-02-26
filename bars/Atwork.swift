@@ -2,10 +2,9 @@
 //  Atwork.swift
 //  bars
 //
-//  Created by Jonathan on 17/02/20.
+//  Created by Eduarda on 17/02/20.
 //  Copyright © 2020 hbsis. All rights reserved.
 //
-
 import Foundation
 import MapKit
 import Contacts
@@ -39,12 +38,6 @@ class Atwork : NSObject, MKAnnotation {
         self.classificacao = bar.classifica
         self.coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(bar.lati), longitude: CLLocationDegrees(bar.long))
     }
-        
-        
-    
-
-
-    
     
     //O Botão de informações que fica a direita das anotações irá abrir este mapItem no aplicativo de mapas
     func mapItem() -> MKMapItem {
@@ -54,8 +47,8 @@ class Atwork : NSObject, MKAnnotation {
         let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDict)
         
         let mapItem = MKMapItem(placemark: placemark)
-            mapItem.name = title
+        mapItem.name = title
         
-            return mapItem
+        return mapItem
     }
 }

@@ -2,7 +2,7 @@
 //  MapViewViewController.swift
 //  bars
 //
-//  Created by Jonathan on 17/02/20.
+//  Created by Eduarda on 17/02/20.
 //  Copyright © 2020 hbsis. All rights reserved.
 //
 
@@ -16,14 +16,14 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
     
    // var bares: [ Atwork ] = []
     var locationManager = CLLocationManager()
-    var bares = [Atwork]()
+    var savedBars: [Bar]?
     var bar : Bar!
+    var selectedAnnotation: Bar?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapView.delegate = self
-        //Mostrando mapa como satelite
-       
+        
+
         
     
         //Autorização
@@ -40,6 +40,7 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
         }
         carregaBarsAnotacao()
         
+        mapView.delegate = self
     
        // mapView.addAnnotation(bares as! MKAnnotation)
         
@@ -48,14 +49,16 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
         mapView.addAnnotation(atWork)*/
        
     }
+    //Mostrando mapa como satelite
+
     @IBAction func btnStatelite(_ sender: Any) {
         self.mapView.mapType = MKMapType.satellite
     }
     
     func carregaBarsAnotacao() {
-        var savedBars = NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar] ?? [Bar]()
+        savedBars = NSKeyedUnarchiver.unarchiveObject(withFile : Bar.ArchiveURL.path) as? [Bar] ?? [Bar]()
         print(bar)
-        if (savedBars.isEmpty) {
+        if (savedBars!.isEmpty) {
             let atWork1 = Atwork(title: "Bar do Juka", localNome: "Centro - Blumenau", classificacao: 3, cordinate: CLLocationCoordinate2D(latitude: -26.914919, longitude:  -49.071437))
             mapView.addAnnotation(atWork1)
             
@@ -63,16 +66,9 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
             mapView.addAnnotation(atWork2)
            
         } else {
-            for bar in savedBars {
+            for bar in savedBars! {
                 let atwork = Atwork(bar: bar)!;
-                let anotacao = MKPointAnnotation()
-                anotacao.title = atwork.title
-                anotacao.coordinate = CLLocationCoordinate2D(
-                    latitude: atwork.coordinate.latitude,
-                    longitude: atwork.coordinate.longitude
-                )
-                mapView.addAnnotation(anotacao)
-                print(anotacao)
+                mapView.addAnnotation(atwork)
             }
         }
     }
@@ -125,14 +121,25 @@ class MapViewViewController: UIViewController, CLLocationManagerDelegate{
             }
         //Aqui estou abrindo uma biblioteca do maps,onde ao cliclar no botão de mais informações no lugar setado o usuario será direcionado ao aplicativo maps
         
-        func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-    
-                let location = view.annotation as! Atwork
-                let launchOpitions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             
-                location.mapItem().openInMaps(launchOptions: launchOpitions)
+            for bar in savedBars! {
+                if(bar.nome == view.annotation?.title) {
+                    selectedAnnotation = bar
+                }
+            }
+           
+            performSegue(withIdentifier: "showFromMap", sender: MKAnnotationView.self)
+            
             }
         
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+            if segue.identifier == "showFromMap"{
+                let destino = segue.destination as! BarViewController
+                
+                destino.bar = selectedAnnotation
+            }
+        }
     }
 
 
