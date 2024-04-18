@@ -1,6 +1,4 @@
 # Aplicativo Bar
-feito em swift
-
 
 Projeto criado na época do meu estágio como dev IOS 
 
